@@ -1,0 +1,64 @@
+# .zip
+Implement a 3-bit binary counter in VHDL.
+
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity fsm_3bit_counter is 
+	port(clk,rst: in std_logic;
+		 outp: out std_logic_vector(2 downto 0));
+end entity;
+architecture logic_flow of fsm_3bit_counter is
+	type state is (st0,st1,st2,st3,st4,st5,st6,st7);
+	signal present_state , next_state: state;
+begin
+
+process(clk,rst) -- PS nin nasıl değiştiğini belirten process
+	begin
+		if 	  (rst='1') then
+				present_state <= st0;
+		elsif (clk'event and clk='1') then -- Rising edge olduğunu belirttik
+				present_state <= next_state ;
+		end if;
+	end process;
+	
+process(present_state) -- Devrenin outputlarını belirten ve next state ayarlayan process
+	 begin 
+		case present_state is
+		
+			when st0 =>
+			outp<="000";
+			next_state<=st1;
+			
+			when st1 =>
+			outp<="001";
+			next_state<=st2;
+
+			when st2 =>
+			outp<="010";
+			next_state<=st3;
+
+			when st3 =>
+			outp<="011";
+			next_state<=st4;
+
+			when st4 =>
+			outp<="100";
+			next_state<=st5;
+
+			when st5 =>
+			outp<="101";
+			next_state<=st6;
+
+			when st6 =>
+			outp<="110";
+			next_state<=st7;
+
+			when st7 =>
+			outp<="111";
+			next_state<=st0;
+			
+		end case;
+	end process;
+end architecture;
